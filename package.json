@@ -21,6 +21,7 @@
     "@sindresorhus/is": "^6.1.0",
     "@types/bootstrap": "^5.2.10",
     "astro": "^4.2.1",
+    "astro-compress": "^2.2.8",
     "astro-font": "^0.0.76",
     "astro-iconify": "^1.2.0",
     "bootstrap": "^5.3.2",
