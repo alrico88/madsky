@@ -1,0 +1,31 @@
+---
+import Icon from "astro-iconify";
+import suncalc from "suncalc";
+import { processNumber } from "number-helper-functions";
+import { LOCATION_COORDS } from "../../helpers/location";
+
+const { getPosition, getMoonPosition } = suncalc;
+
+interface Props {
+  date: Date;
+}
+
+const { props } = Astro;
+
+function toPercent(val: number): number {
+  return processNumber((val * 100) / Math.PI);
+}
+
+const [lon, lat] = LOCATION_COORDS;
+
+const sunAlt = getPosition(props.date, lat, lon);
+const moonAlt = getMoonPosition(props.date, lat, lon);
+---
+
+<h4 class="text-muted">Posición sobre la vertical:</h4>
+<div class="data font-monospace">
+  <div class="hstack gap-3">
+    <div><Icon name="tabler:sun" /> {toPercent(sunAlt.altitude)}%</div>
+    <div><Icon name="tabler:moon" /> {toPercent(moonAlt.altitude)}%</div>
+  </div>
+</div>

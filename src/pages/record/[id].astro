@@ -1,0 +1,161 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Weather from "../../components/Weather.astro";
+import prisma from "../../helpers/prisma";
+import { getContrastColor } from "../../helpers/color";
+import { customDayJs as dayjs } from "../../helpers/time";
+import { ColorPreview } from "../../components/ColorPreview";
+import { Icon } from "astro-iconify";
+import Light from "../../components/Light.astro";
+import { isNumber } from "number-helper-functions";
+
+const { params } = Astro;
+
+if (!isNumber(params.id)) {
+  return new Response("Error", {
+    status: 400,
+    statusText: "ID should be a number",
+  });
+}
+
+const data = await prisma.skyMeasurement.findFirst({
+  where: {
+    id: Number(params.id as string),
+  },
+  select: {
+    id: true,
+    image: true,
+    average_color: true,
+    created_at: true,
+    weather: true,
+  },
+});
+
+if (!data) {
+  return new Response("Record not found", {
+    status: 404,
+    statusText: "Not Found",
+  });
+}
+
+const imgSrc = `data:image/png;base64,${data.image}`;
+
+const textColor = getContrastColor(data.average_color);
+
+const isLast = dayjs().diff(data.created_at, "minutes") < 10;
+---
+
+<Layout title="Detalle del cielo">
+  <div class="container pt-3 pb-5" id="record-container" data-id={params.id}>
+    <div class="row">
+      <div class="col">
+        <div class="hstack gap-2 text-center mb-4 align-items-center">
+          <div>
+            <button class="btn btn-link fs-1" title="Ver anterior" id="go-prev">
+              <Icon name="tabler:caret-left" />
+            </button>
+          </div>
+          <div class="flex-grow-1">
+            <img
+              src={imgSrc}
+              alt={dayjs(data.created_at)
+                .tz("Europe/Madrid")
+                .format("dddd DD MM YYYY HH:mm")}
+              class="img-fluid rounded shadow"
+            />
+          </div>
+          <div>
+            <button
+              class="btn btn-link fs-1"
+              title="Ver siguiente"
+              id="go-next"
+              disabled={isLast}
+            >
+              <Icon name="tabler:caret-right" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vstack gap-4 kpis">
+      <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        <div class="col">
+          <h4 class="text-muted">Color del cielo</h4>
+          <ColorPreview
+            color={data.average_color}
+            textColor={textColor}
+            client:only
+          />
+        </div>
+        <div class="col">
+          <h4 class="text-muted">Tomado el:</h4>
+          <div class="data font-monospace">
+            {
+              dayjs(data.created_at)
+                .tz("Europe/Madrid")
+                .format("dddd DD MMMM YYYY[,] HH:mm")
+            }
+          </div>
+        </div>
+      </div>
+      {
+        data.weather && (
+          <Weather
+            id={data.id}
+            createdAt={data.created_at}
+            feelsLike={data.weather.feelsLike}
+            cloudCover={data.weather.cloudCover}
+            humidity={data.weather.humidity}
+            precipitation={data.weather.precipitation}
+            rain={data.weather.rain}
+            snowfall={data.weather.snowfall}
+            temperature={data.weather.temperature}
+            uvIndex={data.weather.uvIndex}
+            visibility={data.weather.visibility}
+            windDegrees={data.weather.windDegrees}
+            windSpeed={data.weather.windSpeed}
+            pressure={data.weather.pressure}
+            weatherCode={data.weather.weatherCode}
+          />
+        )
+      }
+      <Light date={data.created_at} />
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { $fetch } from "ofetch";
+
+  async function findRecord(order: "next" | "prev") {
+    const id = document
+      .querySelector("#record-container")
+      ?.getAttribute("data-id");
+
+    const data = await $fetch<{ id: number }>(`/api/measurement/find/${id}`, {
+      query: {
+        order,
+      },
+    });
+
+    if (data?.id) {
+      location.href = `/record/${data.id}`;
+    }
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "ArrowLeft") {
+      findRecord("prev");
+    } else if (e.code === "ArrowRight") {
+      findRecord("next");
+    }
+  });
+
+  document.querySelector("#go-prev")?.addEventListener("click", () => {
+    findRecord("prev");
+  });
+
+  document.querySelector("#go-next")?.addEventListener("click", () => {
+    findRecord("next");
+  });
+</script>

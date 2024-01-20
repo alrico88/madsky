@@ -1,0 +1,27 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Icon } from "astro-iconify";
+
+export const prerender = true;
+---
+
+<Layout title="No encontrado">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col text-center">
+        <div class="vstack gap-3">
+          <div>
+            <Icon
+              name="material-symbols:hide-image-outline"
+              style={{ height: "100px", width: "100px" }}
+            />
+          </div>
+          <div class="fs-3">No encontrado</div>
+          <div>
+            <a href="/" class="btn btn-primary">Volver al listado</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

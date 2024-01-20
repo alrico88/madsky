@@ -1,0 +1,78 @@
+---
+interface Props {
+  id: number;
+  color: string;
+  date: Date;
+}
+
+const { props } = Astro;
+
+import { getContrastColor } from "../helpers/color";
+import { ColorPreview } from "./ColorPreview";
+import TimePreview from "./TimePreview.astro";
+import { defaultPng } from "../helpers/image";
+
+const textColor = getContrastColor(props.color);
+---
+
+<div
+  class="grid on-hover d-flex position-relative"
+  style={{ backgroundColor: props.color }}
+  data-id={props.id}
+>
+  <div class="position-absolute w-100 h-100 opacify">
+    <img class="w-100 h-100" src={defaultPng} alt={props.date.toISOString()} />
+  </div>
+  <div
+    class="position-absolute hstack w-100 justify-content-between p-2 align-self-end"
+  >
+    <div>
+      <ColorPreview
+        class="text-small"
+        color={props.color}
+        textColor={textColor}
+        client:only
+      />
+    </div>
+    <TimePreview
+      color={props.color}
+      textColor={textColor}
+      id={props.id}
+      date={props.date}
+    />
+  </div>
+</div>
+
+<script>
+  import { $fetch } from "ofetch";
+  import { defaultPng } from "../helpers/image";
+
+  document.querySelectorAll(".on-hover").forEach((d) => {
+    d.addEventListener("mouseenter", async (e) => {
+      const currElement = (e as MouseEvent).target as HTMLElement;
+      const id = currElement.getAttribute("data-id");
+
+      if (currElement.querySelector("img")?.getAttribute("src") != defaultPng) {
+        return;
+      }
+
+      const src = await $fetch<{
+        image: string;
+      }>(`/api/measurement/id/${id}`);
+
+      const fullUrl = `data:image/png;base64,${src.image}`;
+
+      currElement.querySelector("img")?.setAttribute("src", fullUrl);
+    });
+  });
+</script>
+
+<style>
+  .grid {
+    height: 200px;
+
+    img {
+      object-fit: cover;
+    }
+  }
+</style>

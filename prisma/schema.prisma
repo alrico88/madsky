@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SkyMeasurement {
+  id            Int                 @id @default(autoincrement())
+  created_at    DateTime            @default(now())
+  average_color String
+  image         String
+  weather       MeasurementWeather?
+}
+
+model MeasurementWeather {
+  id               Int            @id @default(autoincrement())
+  measurement      SkyMeasurement @relation(fields: [skyMeasurementId], references: [id])
+  skyMeasurementId Int            @unique
+  created_at       DateTime       @default(now())
+  feelsLike        Float
+  cloudCover       Float
+  humidity         Float
+  precipitation    Float
+  rain             Float
+  snowfall         Float
+  temperature      Float
+  uvIndex          Float
+  visibility       Float
+  windDegrees      Float
+  windSpeed        Float
+  pressure         Float
+  weatherCode      Int
+}

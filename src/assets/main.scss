@@ -1,0 +1,111 @@
+$font-family-sans-serif: "Noto Sans", sans-serif;
+
+body,
+html {
+  font-size: 16px;
+}
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+@include media-breakpoint-down(sm) {
+  body,
+  html {
+    font-size: 14px;
+  }
+}
+
+.overflow-y {
+  overflow-y: auto;
+}
+
+.text-small {
+  font-size: 0.8rem;
+}
+
+.btn-link {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+#main-nav {
+  @include media-breakpoint-up(sm) {
+    .navbar-brand,
+    [astro-icon] {
+      font-size: 1.7rem;
+    }
+  }
+
+  .title-font {
+    font-family: "Bungee", "Helvetica Neue", Helvetica, sans-serif;
+  }
+
+  .navbar-brand {
+    letter-spacing: 0.1rem;
+    background-image: linear-gradient(to right, #c8cfd5, #9cc2e3);
+    transition: color 0.5s ease-in-out;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .nav-link {
+    @extend .p-2;
+    @extend .rounded;
+    &.active {
+      background-color: black;
+    }
+  }
+}
+
+.bg-color {
+  @extend .rounded;
+  @extend .p-2;
+  display: inline-block;
+  border: 1px solid transparent;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.grid {
+  width: 100%;
+}
+
+.on-hover {
+  height: 100%;
+  width: 100%;
+
+  .opacify {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  &:hover {
+    .opacify {
+      opacity: 1;
+    }
+  }
+}
+
+.kpis {
+  h4 {
+    font-size: 1.1rem;
+  }
+
+  .data {
+    font-size: 1.3rem;
+  }
+}
+
+[astro-icon] {
+  width: 1em;
+  height: 1em;
+}

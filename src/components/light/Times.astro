@@ -1,0 +1,32 @@
+---
+interface Props {
+  date: Date;
+}
+
+const { props } = Astro;
+
+import { customDayJs as dayjs } from "../../helpers/time";
+import suncalc from "suncalc";
+const { getTimes } = suncalc;
+import { Icon } from "astro-iconify";
+import { LOCATION_COORDS } from "../../helpers/location";
+
+const solarTimes = (() => {
+  const [lon, lat] = LOCATION_COORDS;
+
+  return getTimes(dayjs(props.date).tz("Europe/Madrid").toDate(), lat, lon);
+})();
+---
+
+<h4 class="text-muted">Horario solar:</h4>
+
+<div class="data font-monospace hstack gap-3">
+  <div>
+    <Icon name="tabler:sunrise" ) />
+    {dayjs(solarTimes.sunrise).format("HH:mm")}
+  </div>
+  <div>
+    <Icon name="tabler:sunset" ) />
+    {dayjs(solarTimes.sunset).format("HH:mm")}
+  </div>
+</div>

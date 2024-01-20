@@ -1,0 +1,20 @@
+---
+import { processNumber } from "number-helper-functions";
+import suncalc from "suncalc";
+const { getMoonIllumination } = suncalc;
+
+interface Props {
+  date: Date;
+}
+
+const { props } = Astro;
+
+const moonIllumination = processNumber(
+  getMoonIllumination(new Date(props.date)).fraction * 100
+);
+---
+
+<h4 class="text-muted">Superficie iluminada de la luna:</h4>
+<div class="data font-monospace">
+  {moonIllumination}%
+</div>

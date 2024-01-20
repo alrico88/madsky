@@ -1,0 +1,174 @@
+---
+import { AstroFont } from "astro-font";
+import { Icon } from "astro-iconify";
+
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+}
+
+const { props, url } = Astro;
+const { pathname } = url;
+
+import "../assets/main.scss";
+import ClipNotifier from "../components/ClipNotifier.astro";
+---
+
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Astro description" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/pwa-512x512.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/pwa-192x192.png" />
+    <meta name="msapplication-TileColor" content="#222529" />
+    <meta name="theme-color" content="#222529" />
+    <meta name="author" content="Alberto Rico" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{props.title}</title>
+    <meta name="description" content={props.description} />
+    <meta name="keywords" content={props.keywords} />
+    <AstroFont
+      config={[
+        {
+          src: [],
+          name: "Noto Sans",
+          // Google Fonts URL
+          googleFontsURL:
+            "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&display=swap",
+          preload: true,
+          display: "swap",
+          selector: "body",
+          fallback: "sans-serif",
+        },
+        {
+          src: [],
+          name: "Bungee",
+          googleFontsURL:
+            "https://fonts.googleapis.com/css2?family=Bungee:wght@400&display=swap",
+          preload: true,
+          display: "swap",
+          selector: "body",
+          fallback: "sans-serif",
+        },
+      ]}
+    />
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-sm bg-dark"
+      id="main-nav"
+      data-bs-theme="dark"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand title-font" href="/">MADSKY</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Mostrar navegación"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
+            <li class="nav-item">
+              <a
+                title="Vista de rejilla"
+                class:list={[
+                  "nav-link",
+                  {
+                    active: pathname === "/",
+                  },
+                ]}
+                data-bs-toggle="tooltip"
+                data-bs-title="Vista de rejilla"
+                aria-label="Vista de rejilla"
+                data-bs-placement="bottom"
+                href="/"
+                ><Icon name="ic:twotone-grid-on" />
+                <span class="d-inline-block d-sm-none">Vista de rejilla</span
+                ></a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                title="Vista de lista"
+                class:list={[
+                  "nav-link",
+                  {
+                    active: pathname === "/list",
+                  },
+                ]}
+                data-bs-toggle="tooltip"
+                data-bs-title="Vista de lista"
+                aria-label="Vista de lista"
+                data-bs-placement="bottom"
+                href="/list"
+                ><Icon name="ic:twotone-table-rows" />
+                <span class="d-inline-block d-sm-none">Vista de lista</span></a
+              >
+            </li>
+            <li class="nav-item border-start mx-2"></li>
+            <li class="nav-item">
+              <a
+                class:list={[
+                  "nav-link",
+                  {
+                    active: pathname === "/about",
+                  },
+                ]}
+                data-bs-toggle="tooltip"
+                data-bs-title="Acerca de este proyecto"
+                aria-label="Acerca de este proyecto"
+                data-bs-placement="bottom"
+                href="/about"
+                ><Icon name="tabler:info-circle" />
+                <span class="d-inline-block d-sm-none"
+                  >Acerca de este proyecto</span
+                ></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <slot />
+    <ClipNotifier />
+    <script>
+      import "bootstrap/js/dist/collapse";
+      import Tooltip from "bootstrap/js/dist/tooltip";
+
+      const tooltipTriggerList = document.querySelectorAll(
+        '[data-bs-toggle="tooltip"]'
+      );
+      /* eslint-disable-next-line  no-unused-vars*/
+      const tooltipList = [...tooltipTriggerList].map(
+        (tooltipTriggerEl) => new Tooltip(tooltipTriggerEl)
+      );
+
+      function setColorTheme() {
+        document
+          .querySelector("html")
+          ?.setAttribute(
+            "data-bs-theme",
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light"
+          );
+      }
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", setColorTheme);
+
+      setColorTheme();
+    </script>
+  </body>
+</html>

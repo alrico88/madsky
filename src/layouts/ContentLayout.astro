@@ -1,0 +1,33 @@
+---
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<Layout title={title}>
+  <div class="container py-4">
+    <div class="row">
+      <div class="col">
+        <slot />
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style is:inline>
+  h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+
+  #collaborate-logo {
+    img {
+      height: 60px;
+      width: 217px;
+    }
+  }
+</style>

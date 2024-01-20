@@ -1,0 +1,38 @@
+---
+import MeasurementListItem from "../components/MeasurementListItem.astro";
+import prisma from "../helpers/prisma";
+import Layout from "../layouts/Layout.astro";
+
+const data = await prisma.skyMeasurement.findMany({
+  select: {
+    id: true,
+    created_at: true,
+    average_color: true,
+  },
+  orderBy: {
+    created_at: "desc",
+  },
+});
+---
+
+<Layout
+  title="MADSKY"
+  description="Observa el cielo de Madrid y sus colores a lo largo de los días"
+  keywords="Madrid,cielo,color,colores"
+>
+  <div class="row row-cols-1 g-0">
+    {
+      data.map((d) => {
+        return (
+          <div class="col">
+            <MeasurementListItem
+              id={d.id}
+              color={d.average_color}
+              date={d.created_at}
+            />
+          </div>
+        );
+      })
+    }
+  </div>
+</Layout>

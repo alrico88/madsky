@@ -1,0 +1,101 @@
+---
+import { processNumber } from "number-helper-functions";
+import { getDirectionName } from "../helpers/geo";
+import { customDayJs as dayjs } from "../helpers/time";
+import { mapIcon } from "../helpers/weather";
+import { Icon } from "astro-iconify";
+
+interface Props {
+  id: number;
+  createdAt: Date;
+  feelsLike: number;
+  cloudCover: number;
+  humidity: number;
+  precipitation: number;
+  rain: number;
+  snowfall: number;
+  temperature: number;
+  uvIndex: number;
+  visibility: number;
+  windDegrees: number;
+  windSpeed: number;
+  pressure: number;
+  weatherCode: number;
+}
+
+const { props } = Astro;
+
+const isDay = (() => {
+  const hour = dayjs(props.createdAt).tz("Europe/Madrid").hour();
+
+  return hour > 7 && hour < 21 ? "day" : "night";
+})();
+---
+
+<section>
+  <h5 class="mb-3 fw-bold">Meteorología</h5>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col">
+      <h4 class="text-muted">Condición:</h4>
+      <div class="data font-monospace">
+        <Icon
+          name={mapIcon(props.weatherCode, isDay)}
+          style={{
+            height: "40px",
+            width: "40px",
+          }}
+        />
+      </div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Temperatura:</h4>
+      <div class="data font-monospace">
+        {props.temperature}ºC (Parecen {props.feelsLike}º C)
+      </div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Cobertura de nubes:</h4>
+      <div class="data font-monospace">{props.cloudCover}%</div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Visibilidad:</h4>
+      <div class="data font-monospace">
+        {processNumber(props.visibility / 1000)} Km.
+      </div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Humedad:</h4>
+      <div class="data font-monospace">
+        {props.humidity}% {Number(props.precipitation) > 0 ? "(Lloviendo)" : ""}
+      </div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Lluvia:</h4>
+      <div class="data font-monospace">{props.rain} mm</div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Nieve:</h4>
+      <div class="data font-monospace">{props.snowfall} mm</div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Viento:</h4>
+      <div class="data font-monospace">
+        {props.windSpeed} km/h hacia <span :title="props.windDegrees.toString()"
+          >{getDirectionName(props.windDegrees)}</span
+        >
+      </div>
+    </div>
+
+    <div class="col">
+      <h4 class="text-muted">Presión atmosférica:</h4>
+      <div class="data font-monospace">{props.pressure} hPa.</div>
+    </div>
+  </div>
+</section>

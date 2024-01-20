@@ -1,0 +1,20 @@
+---
+import Moon from "./light/Moon.astro";
+import Position from "./light/Position.astro";
+import Times from "./light/Times.astro";
+
+interface Props {
+  date: Date;
+}
+
+const { props } = Astro;
+---
+
+<section>
+  <h5 class="mb-3 fw-bold">Iluminación</h5>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col"><Times date={props.date} /></div>
+    <div class="col"><Position date={props.date} /></div>
+    <div class="col"><Moon date={props.date} /></div>
+  </div>
+</section>
