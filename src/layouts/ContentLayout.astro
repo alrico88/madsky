@@ -2,13 +2,17 @@
 import Layout from "./Layout.astro";
 
 interface Props {
-  title: string;
+  frontmatter: {
+    title: string;
+    description?: string;
+    keywords?: string;
+  };
 }
 
-const { title } = Astro.props;
+const { title, description, keywords } = Astro.props.frontmatter;
 ---
 
-<Layout title={title}>
+<Layout title={title} description={description} keywords={keywords}>
   <div class="container py-4">
     <div class="row">
       <div class="col">
