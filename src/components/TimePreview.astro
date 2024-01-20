@@ -8,12 +8,11 @@ interface Props {
 
 const { props } = Astro;
 
-import { customDayJs as dayjs } from "../helpers/time";
+import { customDayJs as dayjs, tz } from "@helpers/time";
 
-import { TimeAgo } from "./TimeAgo";
+import { TimeAgo } from "@components/TimeAgo";
 
-const isMidnight =
-  dayjs(props.date).tz("Europe/Madrid").format("HH:mm") === "00:00";
+const isMidnight = dayjs(props.date).tz(tz).format("HH:mm") === "00:00";
 
 const bgStyle = {
   "background-color": props.color,
@@ -21,9 +20,7 @@ const bgStyle = {
   color: props.textColor,
 };
 
-const fmtDate = dayjs(props.date)
-  .tz("Europe/Madrid")
-  .format("dd DD MMM YYYY HH:mm");
+const fmtDate = dayjs(props.date).tz(tz).format("dd DD MMM YYYY HH:mm");
 ---
 
 <a

@@ -1,5 +1,4 @@
-import { customDayJs as dayjs } from "../helpers/time";
-
+import { customDayJs as dayjs, tz } from "@helpers/time";
 import { createSignal, type Component, createEffect, on } from "solid-js";
 import { useNow } from "solidjs-use";
 
@@ -17,7 +16,7 @@ export const TimeAgo: Component<TimeAgoProps> = (props) => {
 
   createEffect(
     on(now, () => {
-      const parsed = dayjs(props.date).tz("Europe/Madrid");
+      const parsed = dayjs(props.date).tz(tz);
 
       if (props.isMidnight) {
         setTimeAgo(parsed.format("ddd DD, HH:mm"));

@@ -1,12 +1,12 @@
 import { getAverageColor } from "fast-average-color-node";
 import sharp from "sharp";
 import { z } from "zod";
-import { getWeather, type WeatherData } from "../../services/weather";
+import { getWeather, type WeatherData } from "@services/weather";
 import is from "@sindresorhus/is";
 import type { APIRoute } from "astro";
 import { $fetch } from "ofetch";
-import prisma from "../../helpers/prisma";
-import { LOCATION_COORDS } from "../../helpers/location";
+import prisma from "@helpers/prisma";
+import { LOCATION_COORDS } from "@helpers/location";
 
 async function getSkyMeasurement() {
   const imageUrl = "https://www.avendano.org/cam.jpg";

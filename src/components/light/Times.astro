@@ -5,16 +5,16 @@ interface Props {
 
 const { props } = Astro;
 
-import { customDayJs as dayjs } from "../../helpers/time";
+import { customDayJs as dayjs, tz } from "@helpers/time";
 import suncalc from "suncalc";
 const { getTimes } = suncalc;
 import { Icon } from "astro-iconify";
-import { LOCATION_COORDS } from "../../helpers/location";
+import { LOCATION_COORDS } from "@helpers/location";
 
 const solarTimes = (() => {
   const [lon, lat] = LOCATION_COORDS;
 
-  return getTimes(dayjs(props.date).tz("Europe/Madrid").toDate(), lat, lon);
+  return getTimes(dayjs(props.date).tz(tz).toDate(), lat, lon);
 })();
 ---
 
@@ -23,10 +23,10 @@ const solarTimes = (() => {
 <div class="data font-monospace hstack gap-3">
   <div>
     <Icon name="tabler:sunrise" ) />
-    {dayjs(solarTimes.sunrise).format("HH:mm")}
+    {dayjs(solarTimes.sunrise).tz(tz).format("HH:mm")}
   </div>
   <div>
     <Icon name="tabler:sunset" ) />
-    {dayjs(solarTimes.sunset).format("HH:mm")}
+    {dayjs(solarTimes.sunset).tz(tz).format("HH:mm")}
   </div>
 </div>

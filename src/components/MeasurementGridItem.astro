@@ -7,10 +7,10 @@ interface Props {
 
 const { props } = Astro;
 
-import { getContrastColor } from "../helpers/color";
-import { ColorPreview } from "./ColorPreview";
-import TimePreview from "./TimePreview.astro";
-import { defaultPng } from "../helpers/image";
+import { getContrastColor } from "@helpers/color";
+import { ColorPreview } from "@components/ColorPreview";
+import TimePreview from "@components/TimePreview.astro";
+import { defaultPng } from "@helpers/image";
 
 const textColor = getContrastColor(props.color);
 ---
@@ -45,7 +45,7 @@ const textColor = getContrastColor(props.color);
 
 <script>
   import { $fetch } from "ofetch";
-  import { defaultPng } from "../helpers/image";
+  import { defaultPng } from "@helpers/image";
 
   document.querySelectorAll(".on-hover").forEach((d) => {
     d.addEventListener("mouseenter", async (e) => {

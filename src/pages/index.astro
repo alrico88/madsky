@@ -1,7 +1,7 @@
 ---
-import MeasurementGridItem from "../components/MeasurementGridItem.astro";
-import prisma from "../helpers/prisma";
-import Layout from "../layouts/Layout.astro";
+import MeasurementGridItem from "@components/MeasurementGridItem.astro";
+import prisma from "@helpers/prisma";
+import Layout from "@layouts/Layout.astro";
 
 const data = await prisma.skyMeasurement.findMany({
   select: {

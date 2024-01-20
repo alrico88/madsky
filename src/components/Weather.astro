@@ -1,8 +1,8 @@
 ---
 import { processNumber } from "number-helper-functions";
-import { getDirectionName } from "../helpers/geo";
-import { customDayJs as dayjs } from "../helpers/time";
-import { mapIcon } from "../helpers/weather";
+import { getDirectionName } from "@helpers/geo";
+import { customDayJs as dayjs, tz } from "@helpers/time";
+import { mapIcon } from "@helpers/weather";
 import { Icon } from "astro-iconify";
 
 interface Props {
@@ -26,7 +26,7 @@ interface Props {
 const { props } = Astro;
 
 const isDay = (() => {
-  const hour = dayjs(props.createdAt).tz("Europe/Madrid").hour();
+  const hour = dayjs(props.createdAt).tz(tz).hour();
 
   return hour > 7 && hour < 21 ? "day" : "night";
 })();
