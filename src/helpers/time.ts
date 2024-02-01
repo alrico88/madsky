@@ -12,3 +12,7 @@ dayjs.locale("es");
 export const customDayJs = dayjs;
 
 export const tz = "Europe/Madrid";
+
+export const MINUTES_IN_A_DAY = 60 * 24;
+export const SNAPSHOTS_IN_A_DAY = MINUTES_IN_A_DAY / 10;
+export const SNAPSHOTS_IN_A_WEEK = SNAPSHOTS_IN_A_DAY * 7;
