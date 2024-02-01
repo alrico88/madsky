@@ -2,6 +2,7 @@
 interface Props {
   id: number;
   color: string;
+  image: string;
   date: Date;
 }
 
@@ -18,7 +19,7 @@ const textColor = getContrastColor(props.color);
 <div
   class="grid on-hover d-flex position-relative"
   style={{ backgroundColor: props.color }}
-  data-id={props.id}
+  data-img={props.image}
 >
   <div class="position-absolute w-100 h-100 opacify">
     <img class="w-100 h-100" src={defaultPng} alt={props.date.toISOString()} />
@@ -44,23 +45,18 @@ const textColor = getContrastColor(props.color);
 </div>
 
 <script>
-  import { $fetch } from "ofetch";
   import { defaultPng } from "@helpers/image";
 
   document.querySelectorAll(".on-hover").forEach((d) => {
     d.addEventListener("mouseenter", async (e) => {
       const currElement = (e as MouseEvent).target as HTMLElement;
-      const id = currElement.getAttribute("data-id");
+      const id = currElement.getAttribute("data-img");
 
       if (currElement.querySelector("img")?.getAttribute("src") != defaultPng) {
         return;
       }
 
-      const src = await $fetch<{
-        image: string;
-      }>(`/api/measurement/id/${id}`);
-
-      const fullUrl = `data:image/png;base64,${src.image}`;
+      const fullUrl = `https://madsky.alrico.dev/${id}.jpeg`;
 
       currElement.querySelector("img")?.setAttribute("src", fullUrl);
     });

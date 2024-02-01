@@ -2,6 +2,7 @@
 interface Props {
   id: number;
   color: string;
+  image: string;
   date: Date;
 }
 
@@ -27,6 +28,7 @@ const textColor = getContrastColor(props.color);
   <div class="position-absolute h-100 w-100 text-center">
     <img
       data-id={props.id}
+      data-img={props.image}
       src={defaultPng}
       alt={props.date.toISOString()}
       class="w-100 h-100 d-none"
@@ -58,7 +60,6 @@ const textColor = getContrastColor(props.color);
 </div>
 
 <script>
-  import { $fetch } from "ofetch";
   import { defaultPng } from "@helpers/image";
 
   async function handleClick(e: PointerEvent) {
@@ -74,11 +75,9 @@ const textColor = getContrastColor(props.color);
       return;
     }
 
-    const src = await $fetch<{
-      image: string;
-    }>(`/api/measurement/id/${id}`);
+    const src = currImg.getAttribute("data-img");
 
-    const fullUrl = `data:image/png;base64,${src.image}`;
+    const fullUrl = `https://madsky.alrico.dev/${src}.jpeg`;
 
     currImg.setAttribute("src", fullUrl);
   }

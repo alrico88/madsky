@@ -8,6 +8,7 @@ const data = await prisma.skyMeasurement.findMany({
     id: true,
     created_at: true,
     average_color: true,
+    image: true,
   },
   orderBy: {
     created_at: "desc",
@@ -29,6 +30,7 @@ const data = await prisma.skyMeasurement.findMany({
               id={d.id}
               color={d.average_color}
               date={d.created_at}
+              image={d.image}
             />
           </div>
         );
