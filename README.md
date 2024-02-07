@@ -9,7 +9,7 @@ Está disponible en [madsky.alrico.es](https://madsky.alrico.es).
 ## Tecnologías utilizadas:
 
 - [Astro](https://astro.build)
-- [fast-average-color-node](https://www.npmjs.com/package/fast-average-color-node)
+- [ImageScript](https://github.com/matmen/ImageScript)
 - [Deno Deploy / Deno CRON](https://deno.com/deploy)
 - [Prisma](https://www.prisma.io)
 
