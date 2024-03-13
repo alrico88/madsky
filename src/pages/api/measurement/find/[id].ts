@@ -1,5 +1,5 @@
+import db from "@helpers/db";
 import type { APIRoute } from "astro";
-import prisma from "@helpers/prisma";
 import { z } from "zod";
 
 export const GET: APIRoute = async (event) => {
@@ -13,27 +13,23 @@ export const GET: APIRoute = async (event) => {
   const orderSchema = z.enum(["prev", "next"]);
   const order = orderSchema.parse(searchParams.get("order"));
 
-  const curr = await prisma.skyMeasurement.findFirstOrThrow({
-    where: {
-      id,
-    },
-    select: {
-      created_at: true,
+  const curr = await db.query.skyMeasurement.findFirst({
+    where: (measurement, {eq}) => eq(measurement.id, id),
+    columns: {
+      createdAt: true,
     },
   });
 
-  const data = await prisma.skyMeasurement.findFirst({
-    where: {
-      created_at: {
-        [order === "next" ? "gt" : "lt"]: curr.created_at,
-      },
-    },
-    select: {
+  if (!curr) {
+    throw new Error('measurement not found');
+  }
+
+  const data = await db.query.skyMeasurement.findFirst({
+    columns: {
       id: true,
     },
-    orderBy: {
-      created_at: order === "next" ? "asc" : "desc",
-    },
+    where: (measurement, {gt, lt}) => order === 'next' ? gt(measurement.createdAt, curr.createdAt) : lt(measurement.createdAt, curr.createdAt),
+    orderBy: (measurements, {asc, desc}) => order === 'next' ? asc(measurements.createdAt) : desc(measurements.createdAt),
   });
 
   return Response.json(data);

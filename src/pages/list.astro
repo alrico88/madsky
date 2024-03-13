@@ -1,23 +1,21 @@
 ---
 import MeasurementListItem from "@components/MeasurementListItem.astro";
-import prisma from "@helpers/prisma";
 import Layout from "@layouts/Layout.astro";
 import { SNAPSHOTS_IN_A_WEEK } from "@helpers/time";
+import db from "@helpers/db";
 
 const page = Astro.url.searchParams.get("page") ?? 0;
 
-const data = await prisma.skyMeasurement.findMany({
-  select: {
+const data = await db.query.skyMeasurement.findMany({
+  columns: {
     id: true,
-    created_at: true,
-    average_color: true,
+    createdAt: true,
+    averageColor: true,
     image: true,
   },
-  orderBy: {
-    created_at: "desc",
-  },
-  take: SNAPSHOTS_IN_A_WEEK,
-  skip: SNAPSHOTS_IN_A_WEEK * Number(page),
+  orderBy: (measurement, {desc}) => desc(measurement.createdAt),
+  limit: SNAPSHOTS_IN_A_WEEK,
+  offset: SNAPSHOTS_IN_A_WEEK * Number(page),
 });
 ---
 
@@ -33,8 +31,8 @@ const data = await prisma.skyMeasurement.findMany({
           <div class="col">
             <MeasurementListItem
               id={d.id}
-              color={d.average_color}
-              date={d.created_at}
+              color={d.averageColor}
+              date={d.createdAt}
               image={d.image}
             />
           </div>

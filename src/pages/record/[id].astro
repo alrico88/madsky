@@ -1,13 +1,13 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Weather from "@components/Weather.astro";
-import prisma from "@helpers/prisma";
 import { getContrastColor } from "@helpers/color";
 import { customDayJs as dayjs, tz } from "@helpers/time";
 import { ColorPreview } from "@components/ColorPreview";
 import { Icon } from "astro-iconify";
 import Light from "@components/Light.astro";
 import { isNumber } from "number-helper-functions";
+import db from "@helpers/db";
 
 const { params } = Astro;
 
@@ -18,18 +18,18 @@ if (!isNumber(params.id)) {
   });
 }
 
-const data = await prisma.skyMeasurement.findFirst({
-  where: {
-    id: Number(params.id as string),
-  },
-  select: {
+const data = await db.query.skyMeasurement.findFirst({
+  columns: {
     id: true,
     image: true,
-    average_color: true,
-    created_at: true,
-    weather: true,
+    averageColor: true,
+    createdAt: true,
   },
-});
+  where: (measurement, {eq}) => eq(measurement.id, Number(params.id)),
+  with: {
+    weather: true
+  }
+})
 
 if (!data) {
   return new Response("Record not found", {
@@ -40,9 +40,9 @@ if (!data) {
 
 const imgSrc = `https://madsky.alrico.dev/${data.image}.jpeg`;
 
-const textColor = getContrastColor(data.average_color);
+const textColor = getContrastColor(data.averageColor);
 
-const isLast = dayjs().diff(data.created_at, "minutes") < 10;
+const isLast = dayjs().diff(data.createdAt, "minutes") < 10;
 ---
 
 <Layout title="Detalle del cielo">
@@ -58,7 +58,7 @@ const isLast = dayjs().diff(data.created_at, "minutes") < 10;
           <div class="flex-grow-1">
             <img
               src={imgSrc}
-              alt={dayjs(data.created_at)
+              alt={dayjs(data.createdAt)
                 .tz(tz)
                 .format("dddd DD MM YYYY HH:mm")}
               class="img-fluid rounded shadow"
@@ -82,7 +82,7 @@ const isLast = dayjs().diff(data.created_at, "minutes") < 10;
         <div class="col">
           <h4 class="text-muted">Color del cielo</h4>
           <ColorPreview
-            color={data.average_color}
+            color={data.averageColor}
             textColor={textColor}
             client:only
           />
@@ -90,7 +90,7 @@ const isLast = dayjs().diff(data.created_at, "minutes") < 10;
         <div class="col">
           <h4 class="text-muted">Tomado el:</h4>
           <div class="data font-monospace">
-            {dayjs(data.created_at).tz(tz).format("dddd DD MMMM YYYY[,] HH:mm")}
+            {dayjs(data.createdAt).tz(tz).format("dddd DD MMMM YYYY[,] HH:mm")}
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@ const isLast = dayjs().diff(data.created_at, "minutes") < 10;
         data.weather && (
           <Weather
             id={data.id}
-            createdAt={data.created_at}
+            createdAt={data.createdAt}
             feelsLike={data.weather.feelsLike}
             cloudCover={data.weather.cloudCover}
             humidity={data.weather.humidity}
@@ -115,7 +115,7 @@ const isLast = dayjs().diff(data.created_at, "minutes") < 10;
           />
         )
       }
-      <Light date={data.created_at} />
+      <Light date={data.createdAt} />
     </div>
   </div>
 </Layout>

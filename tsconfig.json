@@ -10,6 +10,7 @@
       "@helpers/*": ["src/helpers/*"],
       "@layouts/*": ["src/layouts/*"],
       "@services/*": ["src/services/*"],
+      "@root/*": ["src/*"],
     },
   },
 }

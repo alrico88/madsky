@@ -11,7 +11,7 @@ Está disponible en [madsky.alrico.es](https://madsky.alrico.es).
 - [Astro](https://astro.build)
 - [ImageScript](https://github.com/matmen/ImageScript)
 - [Deno Deploy / Deno CRON](https://deno.com/deploy)
-- [Prisma](https://www.prisma.io)
+- [Drizzle](https://orm.drizzle.team/)
 
 ## Licencia
 
