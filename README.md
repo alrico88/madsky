@@ -9,8 +9,7 @@ Está disponible en [madsky.alrico.es](https://madsky.alrico.es).
 ## Tecnologías utilizadas:
 
 - [Astro](https://astro.build)
-- [ImageScript](https://github.com/matmen/ImageScript)
-- [Deno Deploy / Deno CRON](https://deno.com/deploy)
+- [Sharp](https://sharp.pixelplumbing.com)
 - [Drizzle](https://orm.drizzle.team/)
 
 ## Licencia
