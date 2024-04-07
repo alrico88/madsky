@@ -77,7 +77,7 @@ const textColor = getContrastColor(props.color);
 
     const src = currImg.getAttribute("data-img");
 
-    const fullUrl = `https://madsky.alrico.dev/${src}.jpeg`;
+    const fullUrl = `/api/measurement/img/${src}.jpeg`;
 
     currImg.setAttribute("src", fullUrl);
   }

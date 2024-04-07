@@ -56,7 +56,7 @@ const textColor = getContrastColor(props.color);
         return;
       }
 
-      const fullUrl = `https://madsky.alrico.dev/${id}.jpeg`;
+      const fullUrl = `/api/measurement/img/${id}.jpeg`;
 
       currElement.querySelector("img")?.setAttribute("src", fullUrl);
     });

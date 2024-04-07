@@ -38,7 +38,7 @@ if (!data) {
   });
 }
 
-const imgSrc = `https://madsky.alrico.dev/${data.image}.jpeg`;
+const imgSrc = `https://${process.env.MEASUREMENT_IMAGE_URL}/${data.image}.jpeg`;
 
 const textColor = getContrastColor(data.averageColor);
 

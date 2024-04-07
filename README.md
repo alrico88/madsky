@@ -11,6 +11,7 @@ Está disponible en [madsky.alrico.es](https://madsky.alrico.es).
 - [Astro](https://astro.build)
 - [Sharp](https://sharp.pixelplumbing.com)
 - [Drizzle](https://orm.drizzle.team/)
+- [minio](https://min.io/)
 
 ## Licencia
 

@@ -6,6 +6,7 @@ import {
 
 const client = new S3Client({
   region: "auto",
+  forcePathStyle: true,
   endpoint: process.env.S3_ENDPOINT as string,
   credentials: {
     accessKeyId: process.env.S3_ACCESS_KEY as string,
@@ -18,7 +19,7 @@ export async function uploadMeasurementImage(
   content: Uint8Array
 ): Promise<void> {
   const uploadParams: PutObjectCommandInput = {
-    Bucket: "madsky-storage",
+    Bucket: "madsky",
     Key: `${id}.jpeg`,
     Body: content,
   };
