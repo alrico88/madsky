@@ -25,11 +25,11 @@ const data = await db.query.skyMeasurement.findFirst({
     averageColor: true,
     createdAt: true,
   },
-  where: (measurement, {eq}) => eq(measurement.id, Number(params.id)),
+  where: (measurement, { eq }) => eq(measurement.id, Number(params.id)),
   with: {
-    weather: true
-  }
-})
+    weather: true,
+  },
+});
 
 if (!data) {
   return new Response("Record not found", {
@@ -58,9 +58,7 @@ const isLast = dayjs().diff(data.createdAt, "minutes") < 10;
           <div class="flex-grow-1">
             <img
               src={imgSrc}
-              alt={dayjs(data.createdAt)
-                .tz(tz)
-                .format("dddd DD MM YYYY HH:mm")}
+              alt={dayjs(data.createdAt).tz(tz).format("dddd DD MM YYYY HH:mm")}
               class="img-fluid rounded shadow"
             />
           </div>
@@ -84,7 +82,7 @@ const isLast = dayjs().diff(data.createdAt, "minutes") < 10;
           <ColorPreview
             color={data.averageColor}
             textColor={textColor}
-            client:only
+            client:only="solid-js"
           />
         </div>
         <div class="col">
