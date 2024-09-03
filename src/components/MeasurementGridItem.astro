@@ -12,6 +12,7 @@ import { getContrastColor } from "@helpers/color";
 import { ColorPreview } from "@components/ColorPreview";
 import TimePreview from "@components/TimePreview.astro";
 import { defaultPng } from "@helpers/image";
+import dayjs from "dayjs";
 
 const textColor = getContrastColor(props.color);
 ---
@@ -22,7 +23,11 @@ const textColor = getContrastColor(props.color);
   data-img={props.image}
 >
   <div class="position-absolute w-100 h-100 opacify">
-    <img class="w-100 h-100" src={defaultPng} alt={props.date.toISOString()} />
+    <img
+      class="w-100 h-100"
+      src={defaultPng}
+      alt={dayjs(props.date).format("dddd DD MMM YYYY")}
+    />
   </div>
   <div
     class="position-absolute hstack w-100 justify-content-between p-2 align-self-end"

@@ -1,22 +1,11 @@
 ---
 import MeasurementGridItem from "@components/MeasurementGridItem.astro";
 import Layout from "@layouts/Layout.astro";
-import { SNAPSHOTS_IN_A_WEEK } from "@helpers/time";
-import db from "@helpers/db";
+import { getPagePhotos } from "@helpers/data";
 
-const page = Astro.url.searchParams.get("page") ?? 0;
+const page = Astro.url.searchParams.get("page") ?? "0";
 
-const data = await db.query.skyMeasurement.findMany({
-  columns: {
-    id: true,
-    createdAt: true,
-    averageColor: true,
-    image: true,
-  },
-  orderBy: (measurement, {desc}) => desc(measurement.createdAt),
-  limit: SNAPSHOTS_IN_A_WEEK,
-  offset: SNAPSHOTS_IN_A_WEEK * Number(page),
-});
+const data = await getPagePhotos(page);
 ---
 
 <Layout

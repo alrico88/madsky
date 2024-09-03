@@ -53,3 +53,5 @@ export const measurementWeatherRelations = relations(
     };
   }
 );
+
+export type skyMeasurementType = typeof skyMeasurement.$inferSelect;
