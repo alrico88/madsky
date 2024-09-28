@@ -17,27 +17,13 @@ export const MINUTES_IN_A_DAY = 60 * 24;
 export const SNAPSHOTS_IN_A_DAY = MINUTES_IN_A_DAY / 10;
 export const SNAPSHOTS_IN_A_WEEK = SNAPSHOTS_IN_A_DAY * 7;
 
-export function nextDivisibleBy10(date: Date): Date {
-  const minutes = date.getMinutes();
-  let nextMinutes = Math.ceil(minutes / 10) * 10;
-
-  if (nextMinutes === minutes) {
-    nextMinutes += 10;
-  }
-
-  if (nextMinutes === 60) {
-    date.setHours(date.getHours() + 1);
-    date.setMinutes(0);
-  } else {
-    date.setMinutes(nextMinutes);
-  }
-
-  date.setSeconds(0, 0);
-  return date;
-}
-
 export function getCacheTTL(): number {
-  const nextUpdate = nextDivisibleBy10(new Date());
+  const now = new Date();
+  const currMinutes = now.getMinutes();
+  const currSeconds = now.getSeconds();
 
-  return dayjs(nextUpdate).diff(dayjs(), "seconds");
+  const secondsTillNextMinute = 60 - currSeconds;
+  const additionalSeconds = (10 - (currMinutes % 10)) * 60;
+  
+  return secondsTillNextMinute + additionalSeconds;
 }
