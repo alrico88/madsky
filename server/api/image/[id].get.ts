@@ -1,9 +1,9 @@
 import { $fetch } from "ofetch";
 import { z } from "zod";
 
-const runtimeConfig = useRuntimeConfig();
-
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
+
   const paramsSchema = z.object({
     id: z.coerce.string(),
   });

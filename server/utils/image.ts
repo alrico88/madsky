@@ -2,9 +2,9 @@ import sharp from "sharp";
 import { nanoid } from "nanoid";
 import { getAverageColor } from "fast-average-color-node";
 
-const runtimeConfig = useRuntimeConfig();
-
 async function getAvgColor(imgBuffer: ArrayBuffer): Promise<string> {
+  const runtimeConfig = useRuntimeConfig();
+
   const decoded = sharp(imgBuffer);
 
   const cropped = decoded.extract({
@@ -31,6 +31,8 @@ export async function getImageDetails(url: string): Promise<{
   avgColor: string;
   image: Uint8Array;
 }> {
+  const runtimeConfig = useRuntimeConfig();
+
   const imageUUID = nanoid(12);
   const img = await $fetch(url, {
     referrer: runtimeConfig.imageReferrer,

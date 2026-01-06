@@ -1,8 +1,8 @@
 import is from "@sindresorhus/is";
 
-const runtimeConfig = useRuntimeConfig();
-
 export default defineEventHandler(async (event) => {
+  const runtimeConfig = useRuntimeConfig();
+
   const { key } = getQuery(event);
 
   if (key !== runtimeConfig.PROCESS_KEY) {
