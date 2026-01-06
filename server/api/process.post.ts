@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
 
   const { key } = getQuery(event);
 
-  if (key !== runtimeConfig.PROCESS_KEY) {
+  if (key !== runtimeConfig.processKey) {
     setResponseStatus(event, 401);
 
     return {
