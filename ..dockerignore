@@ -1,0 +1,33 @@
+# Node / Bun
+node_modules
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# IDE / Editor
+.vscode
+.idea
+*.sublime-workspace
+*.sublime-project
+
+# Build / Output folders
+.dist
+.build
+.nuxt
+.output
+*.local
+
+# Env files
+.env
+.env.*.local
