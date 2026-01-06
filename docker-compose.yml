@@ -9,7 +9,11 @@ services:
       NODE_ENV: production
     restart: unless-stopped
     networks:
+      - databases
       - npm
+
 networks:
+  databases:
+    external: true
   npm:
     external: true
