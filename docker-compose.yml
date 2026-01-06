@@ -11,6 +11,8 @@ services:
     networks:
       - databases
       - npm
+    env_file:
+      - stack.env
 
 networks:
   databases:
