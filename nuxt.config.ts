@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     "@nuxt/fonts",
     "vue-sonner/nuxt",
     "@nuxtjs/color-mode",
+    "nuxt-umami",
   ],
 
   pwa: {
@@ -103,5 +104,9 @@ export default defineNuxtConfig({
 
   experimental: {
     inlineRouteRules: true,
+  },
+  umami: {
+    id: "",
+    host: "",
   },
 });
