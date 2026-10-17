@@ -1,29 +1,28 @@
-const runtimeConfig = useRuntimeConfig();
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export async function uploadMeasurementImage(
   id: string,
   content: Uint8Array
 ): Promise<void> {
-  const endpoint = runtimeConfig.webdavEndpoint as string;
-  const username = runtimeConfig.webdavUsername as string;
-  const password = runtimeConfig.webdavPassword as string;
-
-  if (!endpoint || !username || !password) {
-    throw new Error("Missing WebDAV credentials for image upload.");
-  }
-
-  const baseUrl = endpoint.endsWith("/") ? endpoint : `${endpoint}/`;
-  const targetUrl = `${baseUrl}${id}.jpeg`;
-  const auth = Buffer.from(`${username}:${password}`, "utf8").toString(
-    "base64"
-  );
-
-  await $fetch(targetUrl, {
-    method: "PUT",
-    body: content,
-    headers: {
-      Authorization: `Basic ${auth}`,
-      "Content-Type": "image/jpeg",
+  const runtimeConfig = useRuntimeConfig();
+  const client = new S3Client({
+    region: "auto",
+    forcePathStyle: true,
+    endpoint: runtimeConfig.s3Endpoint as string,
+    credentials: {
+      accessKeyId: runtimeConfig.s3AccessKey as string,
+      secretAccessKey: runtimeConfig.s3SecretKey as string,
     },
   });
+  try {
+    await client.send(
+      new PutObjectCommand({
+        Bucket: "madsky",
+        Key: `${id}.jpeg`,
+        Body: content,
+      })
+    );
+  } finally {
+    client.destroy();
+  }
 }

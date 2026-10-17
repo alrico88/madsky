@@ -11,15 +11,16 @@ Está disponible en [madsky.alrico.es](https://madsky.alrico.es).
 - [Nuxt](https://nuxt.com)
 - [Sharp](https://sharp.pixelplumbing.com)
 - [Drizzle](https://orm.drizzle.team/)
-- [WebDAV](https://en.wikipedia.org/wiki/WebDAV)
+- [S3 / MinIO](https://min.io/)
 
 ## Configuración
 
-Las imágenes se leen desde el mismo endpoint WebDAV en modo público (sin credenciales) y se escriben con usuario/contraseña. Variables relevantes:
+Las imágenes se almacenan en el bucket S3 `madsky` y se leen desde su URL pública. Variables relevantes:
 
-- `NUXT_WEBDAV_ENDPOINT`: base para escribir (`https://.../webdav/`)
-- `NUXT_WEBDAV_USERNAME`: usuario WebDAV (solo escritura)
-- `NUXT_WEBDAV_PASSWORD`: contraseña WebDAV (solo escritura)
+- `NUXT_S3_ENDPOINT`: endpoint del servicio S3 / MinIO.
+- `NUXT_S3_ACCESS_KEY`: clave de acceso para subir imágenes.
+- `NUXT_S3_SECRET_KEY`: clave secreta para subir imágenes.
+- `NUXT_MEASUREMENT_IMAGE_URL`: URL pública base para leer las imágenes.
 
 ## Licencia
 

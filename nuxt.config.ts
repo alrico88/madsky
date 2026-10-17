@@ -63,9 +63,10 @@ export default defineNuxtConfig({
     imageReferrer: "https://meteosierra.com/webcams/madrid-moratalaz/",
     locationLat: "",
     locationLon: "",
-    webdavEndpoint: "",
-    webdavUsername: "",
-    webdavPassword: "",
+    measurementImageUrl: "",
+    s3Endpoint: "",
+    s3AccessKey: "",
+    s3SecretKey: "",
     public: {
       measurementsLocation: [40.4, -3.64],
     },

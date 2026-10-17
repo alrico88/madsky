@@ -18,7 +18,7 @@ nav-bar
       li #[icon(name="logos:nuxt-icon")] #[nuxt-link(to="https://nuxt.com") Nuxt 4]
       li #[icon(name="material-symbols:package-2-outline-sharp")] #[nuxt-link(to="https://sharp.pixelplumbing.com") Sharp]
       li #[icon(name="logos:drizzle")] #[nuxt-link(to="https://orm.drizzle.team") Drizzle ORM]
-      li #[icon(name="mdi:web")] #[nuxt-link(to="https://en.wikipedia.org/wiki/WebDAV") WebDAV]
+      li #[icon(name="mdi:web")] #[nuxt-link(to="https://min.io/") S3 / MinIO]
   section
     donate-button
 </template>

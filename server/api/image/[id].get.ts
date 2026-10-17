@@ -11,7 +11,11 @@ export default defineEventHandler(async (event) => {
   const { id } = await getValidatedRouterParams(event, paramsSchema.parse);
 
   try {
-    const baseUrl = runtimeConfig.webdavEndpoint as string;
+    const endpoint = runtimeConfig.measurementImageUrl as string;
+    if (!endpoint) return new Response(null, { status: 404 });
+    const baseUrl = /^https?:\/\//.test(endpoint)
+      ? endpoint
+      : `https://${endpoint}`;
     const imageUrl = baseUrl.endsWith("/")
       ? `${baseUrl}${id}.jpeg`
       : `${baseUrl}/${id}.jpeg`;
@@ -23,7 +27,7 @@ export default defineEventHandler(async (event) => {
     return new Response(img, {
       status: 200,
       headers: {
-        contentType: "image/jpeg",
+        "Content-Type": "image/jpeg",
       },
     });
   } catch (err) {
