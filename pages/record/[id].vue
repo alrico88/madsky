@@ -1,74 +1,93 @@
 <template lang="pug">
 nav-bar
-.container.py-4.mx-auto
-  div(v-if="pending || error || !data")
-    b-alert.bg-blue-800(v-if="pending") #[icon(name="svg-spinners:270-ring-with-bg")] Cargando
-    b-alert.bg-red-800(
-      v-if="!pending && (!data || error != null)",
-      variant="danger"
-    )
-      template(v-if="!data") Registro no encontrado
-      template(v-if="error != null") Error al obtener registro
-  template(v-if="data && !pending && !error")
-    .flex.gap-2.text-center.mb-4.items-center.justify-center
-      div
-        button(variant="link", @click="findPrev", title="'Ver anterior'")
-          icon(size="40", name="tabler:caret-left")
-      .w-full
-        .relative.w-full(style="padding-bottom: min(500px, 100%)")
-          .absolute.inset-0.flex.items-center.justify-center
-            img.max-w-full.max-h-full.rounded.shadow-md.shadow(
-              :src="getImageSrc(data.image)"
-            )
-      div
-        button(variant="link", @click="findNext", title="'Ver siguiente'")
-          icon(size="40", name="tabler:caret-right")
-    .flex.flex-col.gap-4
-      .flex.flex-row.gap-5.justify-center
-        div(class="flex-basis-1/3")
-          h4.text-slate-600 Color del cielo:
-          .color-preview.p-2.rounded.cursor-pointer.font-mono.data(
-            title="'Copiar al portapapeles'",
-            @click="() => copy()",
-            :style="{ backgroundColor: data.averageColor, color: textColor }"
-          ) {{ data.averageColor }}
-        div(class="flex-basis-1/3")
-          h4.text-slate-600 Tomado el:
-          .data.font-monospace {{ dayjs(data.createdAt).format("dddd DD MMMM YYYY[,] HH:mm") }}
-      section
-        h5.mb-3.fw-bold Meteorología
+u-container.py-4(as="main")
+  record-skeleton(v-if="pending")
+  u-alert(
+    v-else-if="error || !data",
+    color="error",
+    title="No se pudo cargar el registro",
+    icon="i-tabler-alert-circle"
+  )
+  template(v-else)
+    u-card.mb-4(:ui="{ body: 'p-3 sm:p-4' }")
+      .flex.gap-2.text-center.items-center.justify-center
+        div
+          u-button(
+            color="neutral",
+            variant="ghost",
+            @click="findAdjacent('prev')",
+            :disabled="isNavigating",
+            title="Ver anterior"
+          )
+            icon(size="40", name="tabler:caret-left")
+        .w-full
+          .relative.w-full(style="padding-bottom: min(500px, 100%)")
+            .absolute.inset-0.flex.items-center.justify-center
+              img.max-w-full.max-h-full.rounded.shadow-md.shadow(
+                :src="getImageSrc(data.image)"
+              )
+        div
+          u-button(
+            color="neutral",
+            variant="ghost",
+            @click="findAdjacent('next')",
+            :disabled="isNavigating",
+            title="Ver siguiente"
+          )
+            icon(size="40", name="tabler:caret-right")
+    .grid.gap-4
+      u-card(as="section", title="Registro")
+        .grid.gap-5(class="sm:grid-cols-2")
+          div
+            h4.text-toned Color del cielo:
+            u-button.color-preview.font-mono.data(
+              color="neutral",
+              variant="outline",
+              title="Copiar al portapapeles",
+              :ui="{ base: 'ring-current focus-visible:outline-current' }",
+              @click="() => copy()",
+              :style="{ backgroundColor: data.averageColor, color: textColor, outlineColor: textColor, '--tw-ring-color': textColor }"
+            ) {{ data.averageColor }}
+          div
+            h4.text-toned Tomado el:
+            .data.font-mono {{ dateFormatter.format(new Date(data.createdAt)) }}
+      u-card(as="section", title="Meteorología")
         .grid.grid-cols-1.gap-4(class="md:grid-cols-3", v-if="data.weather")
           div
-            h4.text-slate-600 Condición:
-            .data.font-monospace
+            h4.text-toned Condición:
+            .data.font-mono
               icon(:name="mapIcon(data.weather.weatherCode, isDay)", size="40")
           div
-            h4.text-slate-600 Temperatura:
-            .data.font-monospace {{ data.weather.temperature }}ºC (Parecen {{ data.weather.feelsLike }}º C)
+            h4.text-toned Temperatura:
+            .data.font-mono {{ data.weather.temperature }}ºC (Parecen {{ data.weather.feelsLike }}º C)
           div
-            h4.text-slate-600 Cobertura de nubes:
-            .data.font-monospace {{ data.weather.cloudCover }}%
+            h4.text-toned Cobertura de nubes:
+            .data.font-mono {{ data.weather.cloudCover }}%
           div
-            h4.text-slate-600 Visibilidad:
-            .data.font-monospace {{ processNumber(data.weather.visibility / 1000) }} Km.
+            h4.text-toned Visibilidad:
+            .data.font-mono {{ processNumber(data.weather.visibility / 1000) }} Km.
           div
-            h4.text-slate-600 Humedad:
-            .data.font-monospace {{ data.weather.humidity }}% {{ Number(data.weather.precipitation) > 0 ? "(Lloviendo)" : "" }}
+            h4.text-toned Humedad:
+            .data.font-mono {{ data.weather.humidity }}% {{ Number(data.weather.precipitation) > 0 ? "(Lloviendo)" : "" }}
           div
-            h4.text-slate-600 Lluvia:
-            .data.font-monospace {{ data.weather.rain }} mm
+            h4.text-toned Lluvia:
+            .data.font-mono {{ data.weather.rain }} mm
           div
-            h4.text-slate-600 Nieve:
-            .data.font-monospace {{ data.weather.snowfall }} mm
+            h4.text-toned Nieve:
+            .data.font-mono {{ data.weather.snowfall }} mm
           div
-            h4.text-slate-600 Viento:
-            .data.font-monospace {{ data.weather.windSpeed }} km/h hacia #[span(:title="data.weather.windDegrees.toString()") {{ getDirectionName(data.weather.windDegrees) }}]
+            h4.text-toned Viento:
+            .data.font-mono {{ data.weather.windSpeed }} km/h hacia #[span(:title="data.weather.windDegrees.toString()") {{ getDirectionName(data.weather.windDegrees) }}]
           div
-            h4.text-slate-600 Presión atmosférica:
-            .data.font-monospace {{ data.weather.pressure }} hPa.
-        b-alert.bg-red-800(v-if="!data.weather") Sin datos
-      section
-        h5.mb-3.fw-bold Iluminación
+            h4.text-toned Presión atmosférica:
+            .data.font-mono {{ data.weather.pressure }} hPa.
+        u-alert(
+          v-if="!data.weather",
+          title="Sin datos meteorológicos",
+          color="neutral",
+          icon="i-tabler-cloud-question"
+        )
+      u-card(as="section", title="Iluminación")
         .grid.grid-cols-1.gap-6(class="md:grid-cols-3")
           div
             light-times(:date="data.createdAt")
@@ -79,27 +98,45 @@ nav-bar
 </template>
 
 <script setup lang="ts">
-import dayjs from "dayjs";
-import "dayjs/locale/es";
-dayjs.locale("es");
 import { processNumber } from "number-helper-functions";
-import is from "@sindresorhus/is";
 
 useSeoMeta({
   title: "Detalle del cielo",
-});
-
-definePageMeta({
-  middleware: ["record"],
 });
 
 const { mapIcon } = useWeather();
 
 const route = useRoute();
 
-const { data, pending, error } = await useFetch(
-  `/api/measurement/id/${route.params.id}`
+const { data, pending, error } = await useLazyFetch(
+  () => `/api/measurement/id/${route.params.id}`
 );
+
+if (error.value) {
+  throw createError({
+    statusCode: error.value.statusCode ?? 500,
+    statusMessage:
+      error.value.statusCode === 404
+        ? "Registro no encontrado"
+        : "Error al obtener registro",
+    fatal: true,
+  });
+}
+
+const dateFormatter = new Intl.DateTimeFormat("es-ES", {
+  timeZone: "Europe/Madrid",
+  weekday: "long",
+  day: "2-digit",
+  month: "long",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+const hourFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "Europe/Madrid",
+  hour: "2-digit",
+  hourCycle: "h23",
+});
 
 const textColor = useContrastColor(() => data.value?.averageColor ?? "black");
 
@@ -109,70 +146,68 @@ function getImageSrc(partial: string): string {
 
 const { arrowleft, arrowright } = useMagicKeys();
 
-function goToRecord(id?: number | null): void {
-  if (!is.nullOrUndefined(id)) {
-    navigateTo(`/record/${id}`);
+const isNavigating = shallowRef(false);
+
+async function findAdjacent(direction: "prev" | "next") {
+  if (!data.value || pending.value || isNavigating.value) return;
+
+  isNavigating.value = true;
+  const currentPath = route.path;
+  try {
+    const id = await $fetch(`/api/measurement/${direction}`, {
+      query: { time: data.value.createdAt },
+    });
+    if (route.path !== currentPath) return;
+    if (id == null) {
+      toast.add({
+        color: "info",
+        title:
+          direction === "prev"
+            ? "No hay registros anteriores"
+            : "No hay registros siguientes",
+      });
+      return;
+    }
+    await navigateTo(`/record/${id}`);
+  } catch {
+    toast.add({
+      title: "No se pudo cargar el registro. Inténtalo de nuevo.",
+      color: "error",
+    });
+  } finally {
+    isNavigating.value = false;
   }
 }
 
-async function findNext() {
-  if (is.nullOrUndefined(data.value)) {
-    return;
-  }
-
-  const nextId = await $fetch("/api/measurement/next", {
-    query: {
-      time: data.value.createdAt,
-    },
-  });
-
-  goToRecord(nextId);
-}
-
-async function findPrev() {
-  if (is.nullOrUndefined(data.value)) {
-    return;
-  }
-
-  const prevId = await $fetch("/api/measurement/prev", {
-    query: {
-      time: data.value.createdAt,
-    },
-  });
-
-  goToRecord(prevId);
-}
-
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-whenever(arrowleft!, () => {
-  findPrev();
-});
-
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-whenever(arrowright!, () => {
-  findNext();
-});
+whenever(arrowleft!, () => findAdjacent("prev"));
+whenever(arrowright!, () => findAdjacent("next"));
 
 const { copy, copied } = useClipboard({
   source: () => data.value?.averageColor ?? "",
 });
 
-const { $toast } = useNuxtApp();
+const toast = useToast();
 
 whenever(copied, () => {
-  $toast.success("Color copiado al portapapeles");
+  toast.add({ title: "Color copiado al portapapeles", color: "success" });
 });
 
 const { getDirectionName } = useGeo();
 
 const isDay = computed(() => {
-  const hour = dayjs(data.value?.createdAt).hour();
+  if (!data.value) return "night";
+  const hour = Number(hourFormatter.format(new Date(data.value.createdAt)));
 
   return hour > 7 && hour < 21 ? "day" : "night";
 });
 </script>
 
 <style lang="scss" scoped>
+button:disabled {
+  opacity: 0.4;
+  cursor: wait;
+}
+
 .color-preview {
   display: inline-block;
 }

@@ -11,12 +11,14 @@ export default defineEventHandler(async (event) => {
   const { id } = await getValidatedRouterParams(event, paramsSchema.parse);
 
   try {
-    const img = await $fetch(
-      `https://${runtimeConfig.measurementImageUrl}/${id}.jpeg`,
-      {
-        responseType: "arrayBuffer",
-      }
-    );
+    const baseUrl = runtimeConfig.webdavEndpoint as string;
+    const imageUrl = baseUrl.endsWith("/")
+      ? `${baseUrl}${id}.jpeg`
+      : `${baseUrl}/${id}.jpeg`;
+
+    const img = await $fetch(imageUrl, {
+      responseType: "arrayBuffer",
+    });
 
     return new Response(img, {
       status: 200,

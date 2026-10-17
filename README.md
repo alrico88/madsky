@@ -11,7 +11,15 @@ Está disponible en [madsky.alrico.es](https://madsky.alrico.es).
 - [Nuxt](https://nuxt.com)
 - [Sharp](https://sharp.pixelplumbing.com)
 - [Drizzle](https://orm.drizzle.team/)
-- [minio](https://min.io/)
+- [WebDAV](https://en.wikipedia.org/wiki/WebDAV)
+
+## Configuración
+
+Las imágenes se leen desde el mismo endpoint WebDAV en modo público (sin credenciales) y se escriben con usuario/contraseña. Variables relevantes:
+
+- `NUXT_WEBDAV_ENDPOINT`: base para escribir (`https://.../webdav/`)
+- `NUXT_WEBDAV_USERNAME`: usuario WebDAV (solo escritura)
+- `NUXT_WEBDAV_PASSWORD`: contraseña WebDAV (solo escritura)
 
 ## Licencia
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-h4.text-slate-500 Posición sobre la vertical:
+h4.text-muted Posición sobre la vertical:
 .data.font-mono
   .flex.gap-3
     div

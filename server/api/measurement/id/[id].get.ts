@@ -3,7 +3,7 @@ import { z } from "zod";
 export default defineCachedEventHandler(
   async (event) => {
     const paramsSchema = z.object({
-      id: z.coerce.number(),
+      id: z.coerce.number().int().positive(),
     });
 
     const { id } = await getValidatedRouterParams(event, (params) =>
@@ -16,6 +16,10 @@ export default defineCachedEventHandler(
         weather: true,
       },
     });
+
+    if (!measurementData) {
+      throw createError({ statusCode: 404, statusMessage: "Registro no encontrado" });
+    }
 
     return measurementData;
   },

@@ -1,6 +1,13 @@
 <template lang="pug">
 nav-bar
-.grid.grid-cols-1
+period-header(
+  :start="data.at(-1)?.createdAt",
+  :end="data[0]?.createdAt",
+  :page="currPage",
+  :pending="pending",
+  :has-next="!!data.length"
+)
+.grid.grid-cols-1(ref="measurements")
   measurement-list-item(
     v-for="measurement of data",
     :key="measurement.id",
@@ -8,17 +15,15 @@ nav-bar
     :color="measurement.averageColor",
     :date="measurement.createdAt",
     :image="measurement.image",
-    @mouseenter="handleHover(measurement.createdAt)",
-    @mouseleave="handleReset"
+    :data-measurement-date="measurement.createdAt"
   )
-next-page-link(:url="nextPage")
-day-scroller(:text="dayScrolledText")
+day-scroller(:text="dayScrolledText", :show="isScrolling")
 </template>
 
 <script setup lang="ts">
-const { currPage, nextPage } = usePage("list");
+const { currPage } = usePage("list");
 
-const { data } = await useFetch("/api/measurements", {
+const { data, pending } = await useFetch("/api/measurements", {
   query: {
     page: currPage,
   },
@@ -27,7 +32,8 @@ const { data } = await useFetch("/api/measurements", {
   watch: [currPage],
 });
 
-const { handleHover, handleReset, dayScrolledText } = useDayScroll();
+const measurements = useTemplateRef<HTMLElement>("measurements");
+const { dayScrolledText, isScrolling } = useDayScroll(measurements);
 
 useSeoMeta({
   title: "MADSKY",

@@ -1,14 +1,15 @@
 <template lang="pug">
-tippy(content="Ver registro", arrow)
-  nuxt-link.bg-color.border.border-solid.rounded.p-2.text-sm(
+u-tooltip(text="Ver registro", arrow)
+  u-button.bg-color(
+    color="neutral",
+    variant="outline",
+    :ui="{ base: 'ring-current focus-visible:outline-current' }",
     :to="`/record/${id}`",
     :class="{ opacify: !isMidnight }"
   ) {{ isMidnight ? formattedDayTag : timeAgo }}
 </template>
 
 <script setup lang="ts">
-import { Tippy } from "vue-tippy";
-
 const props = defineProps<{
   id: number;
   date: string;
@@ -22,7 +23,8 @@ const { timeAgo, isMidnight, formattedDayTag } = useTime(() => props.date);
 <style lang="scss" scoped>
 .bg-color {
   background-color: v-bind("color");
-  border-color: v-bind("textColor") !important;
   color: v-bind("textColor");
+  outline-color: v-bind("textColor");
+  --tw-ring-color: v-bind("textColor");
 }
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-h5.fw-bold.mb-2 Colaborar
+h5.font-bold.mb-2 Colaborar
 p.mb-2 Si te ha gustado la web, puedes colaborar conmigo.
 nuxt-link(href="https://www.buymeacoffee.com/albertorico", target="_blank")
   img.logo-style(

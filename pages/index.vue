@@ -1,6 +1,13 @@
 <template lang="pug">
 nav-bar(:pending="pending", has-refresh, @refresh="() => refresh()")
-.grid.grid-cols-2(class="md:grid-cols-4 lg:grid-cols-6")
+period-header(
+  :start="data.at(-1)?.createdAt",
+  :end="data[0]?.createdAt",
+  :page="currPage",
+  :pending="pending",
+  :has-next="!!data.length"
+)
+.grid.grid-cols-2(ref="measurements", class="md:grid-cols-4 lg:grid-cols-6")
   measurement-grid-item(
     v-for="measurement of data",
     :key="measurement.id",
@@ -8,15 +15,13 @@ nav-bar(:pending="pending", has-refresh, @refresh="() => refresh()")
     :color="measurement.averageColor",
     :date="measurement.createdAt",
     :image="measurement.image",
-    @mouseenter="handleHover(measurement.createdAt)",
-    @mouseleave="handleReset"
+    :data-measurement-date="measurement.createdAt"
   )
-next-page-link(:url="nextPage")
-day-scroller(:text="dayScrolledText")
+day-scroller(:text="dayScrolledText", :show="isScrolling")
 </template>
 
 <script setup lang="ts">
-const { currPage, nextPage } = usePage("");
+const { currPage } = usePage("");
 
 const { data, pending, refresh } = await useFetch("/api/measurements", {
   query: {
@@ -27,7 +32,8 @@ const { data, pending, refresh } = await useFetch("/api/measurements", {
   watch: [currPage],
 });
 
-const { handleHover, handleReset, dayScrolledText } = useDayScroll();
+const measurements = useTemplateRef<HTMLElement>("measurements");
+const { dayScrolledText, isScrolling } = useDayScroll(measurements);
 
 useSeoMeta({
   title: "MADSKY",

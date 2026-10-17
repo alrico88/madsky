@@ -1,28 +1,16 @@
 <template lang="pug">
-.fixed.bg-dark.text-white.p-4.rounded.shadow-sm(
+u-badge.fixed.shadow-sm.pointer-events-none.z-50(
+  color="neutral",
+  variant="solid",
+  size="xl",
   v-if="text && show",
-  class="right-[10px] top-[50vh]"
+  class="right-[10px] top-[50vh] -translate-y-1/2"
 ) {{ text }}
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   text?: string | null;
+  show: boolean;
 }>();
-
-const show = ref(false);
-
-const hide = useDebounceFn(() => {
-  show.value = false;
-}, 1000);
-
-const { isScrolling } = useScroll(window);
-
-watch(isScrolling, (val) => {
-  if (val) {
-    show.value = true;
-  } else {
-    hide();
-  }
-});
 </script>

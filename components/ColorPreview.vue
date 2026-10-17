@@ -1,12 +1,14 @@
 <template lang="pug">
-tippy(content="Copiar color", arrow)
-  button.bg-color.p-2.border.border-solid.rounded-md.text-sm.font-mono.opacify(
+u-tooltip(text="Copiar color", arrow)
+  u-button.bg-color.font-mono.opacify(
+    color="neutral",
+    variant="outline",
+    :ui="{ base: 'ring-current focus-visible:outline-current' }",
     @click.stop="() => copy()"
   ) {{ color }}
 </template>
 
 <script setup lang="ts">
-import { Tippy } from "vue-tippy";
 const props = defineProps<{
   color: string;
   textColor: string;
@@ -16,17 +18,18 @@ const { copy, copied } = useClipboard({
   source: () => props.color,
 });
 
-const { $toast } = useNuxtApp();
+const toast = useToast();
 
 whenever(copied, () => {
-  $toast.success("Color copiado al portapapeles");
+  toast.add({ title: "Color copiado al portapapeles", color: "success" });
 });
 </script>
 
 <style lang="scss" scoped>
 .bg-color {
   background-color: v-bind("color");
-  border-color: v-bind("textColor") !important;
   color: v-bind("textColor");
+  outline-color: v-bind("textColor");
+  --tw-ring-color: v-bind("textColor");
 }
 </style>

@@ -1,5 +1,5 @@
 <template lang="pug">
-h4.text-slate-500 Superficie iluminada de la luna:
+h4.text-muted Superficie iluminada de la luna:
 .data.font-mono {{ moonIllumination }}%
 </template>
 

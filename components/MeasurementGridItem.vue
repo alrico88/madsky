@@ -1,8 +1,8 @@
 <template lang="pug">
-.flex.position-relative.image-item.w-full.on-hover(ref="imageRef")
-  .position-absolute.w-full.h-full
+.flex.relative.image-item.w-full.on-hover(ref="imageRef")
+  .absolute.w-full.h-full
     img.w-full.h-full(:src="imageUrl")
-  .position-absolute.flex.w-full.justify-between.p-2.items-center.bottom-0
+  .absolute.flex.w-full.justify-between.p-2.items-center.bottom-0
     color-preview(:color="color", :text-color="textColor")
     time-preview(
       :id="id",

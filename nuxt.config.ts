@@ -1,6 +1,7 @@
 export default defineNuxtConfig({
   app: {
     head: {
+      htmlAttrs: { class: "light" },
       title: "MADSKY",
       meta: [
         { charset: "utf-8" },
@@ -11,22 +12,15 @@ export default defineNuxtConfig({
     },
   },
 
-  css: [
-    "@/assets/main.scss",
-    "@unocss/reset/tailwind.css",
-    "tippy.js/dist/tippy.css",
-  ],
+  css: ["@/assets/main.css", "@/assets/main.scss"],
 
-  modules: [
-    "@nuxt/icon",
-    "@vueuse/nuxt",
-    "@vite-pwa/nuxt",
-    "@unocss/nuxt",
-    "@nuxt/fonts",
-    "vue-sonner/nuxt",
-    "@nuxtjs/color-mode",
-    "nuxt-umami",
-  ],
+  modules: ["@vueuse/nuxt", "@vite-pwa/nuxt", "@nuxt/ui", "nuxt-umami"],
+
+  ui: { colorMode: false },
+
+  nitro: {
+    externals: { inline: ["@iconify/utils"] },
+  },
 
   pwa: {
     registerType: "autoUpdate",
@@ -61,7 +55,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     databaseUrl: "",
     processKey: "",
-    measurementImageUrl: "",
     imageUrl: "",
     imageTop: 85,
     imageLeft: 280,
@@ -70,16 +63,12 @@ export default defineNuxtConfig({
     imageReferrer: "https://meteosierra.com/webcams/madrid-moratalaz/",
     locationLat: "",
     locationLon: "",
-    s3Endpoint: "",
-    s3AccessKey: "",
-    s3SecretKey: "",
+    webdavEndpoint: "",
+    webdavUsername: "",
+    webdavPassword: "",
     public: {
       measurementsLocation: [40.4, -3.64],
     },
-  },
-
-  build: {
-    transpile: ["vue-sonner"],
   },
 
   fonts: {

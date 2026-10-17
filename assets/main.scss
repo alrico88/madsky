@@ -4,7 +4,8 @@
 }
 
 .on-hover {
-  &:hover {
+  &:hover,
+  &:focus-within {
     .opacify {
       opacity: 1;
     }
@@ -18,5 +19,11 @@
 
   .data {
     font-size: 1.3rem;
+  }
+}
+
+@media (hover: none) {
+  .opacify {
+    opacity: 1;
   }
 }

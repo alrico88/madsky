@@ -1,11 +1,11 @@
 <template lang="pug">
-.image-item.on-hover.flex.position-relative.items-center(
+.image-item.on-hover.flex.relative.items-center(
   :class="{ toggled: isToggled, 'border-t border-b': isToggled }",
   @click="isToggled = !isToggled"
 )
-  .position-absolute.h-full.w-full.text-center(v-if="isToggled")
+  .absolute.h-full.w-full.text-center(v-if="isToggled")
     img.w-full.h-full(:src="imageUrl")
-  .position-absolute.h-full.w-full.flex.justify-between.items-center.p-2
+  .absolute.h-full.w-full.flex.justify-between.items-center.p-2
     color-preview(:color="color", :text-color="textColor")
     time-preview(
       :id="id",

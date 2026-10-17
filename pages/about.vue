@@ -2,7 +2,7 @@
 nav-bar
 .container.py-4.mx-auto.gap-3.flex.flex-col.px-3
   section
-    h5.fw-bold.mb-2 Créditos
+    h5.font-bold.mb-2 Créditos
     p.mb-2 Este proyecto está hecho por #[nuxt-link(:to="portfolioLink", v-bind="linkProps") Alberto Rico].
     p.mb-2 Está inspirado en #[nuxt-link(:to="inspirationLink", v-bind="linkProps") NSKYC] 
     p.mb-2 Foto tomada por:
@@ -13,12 +13,12 @@ nav-bar
         nuxt-link(to="https://meteosierra.com", v-bind="linkProps") meteosierra.com
     p.mb-0 Datos del tiempo desde #[nuxt-link(:to="weatherLink", v-bind="linkProps") OpenMeteo]
   section
-    h5.fw-bold.mb-2 Tecnologías utilizadas:
+    h5.font-bold.mb-2 Tecnologías utilizadas:
     ul.list-disc.pl-6.mb-2
       li #[icon(name="logos:nuxt-icon")] #[nuxt-link(to="https://nuxt.com") Nuxt 4]
       li #[icon(name="material-symbols:package-2-outline-sharp")] #[nuxt-link(to="https://sharp.pixelplumbing.com") Sharp]
       li #[icon(name="logos:drizzle")] #[nuxt-link(to="https://orm.drizzle.team") Drizzle ORM]
-      li #[icon(name="logos:aws-s3")] #[nuxt-link(to="https://www.min.io/") min.io]
+      li #[icon(name="mdi:web")] #[nuxt-link(to="https://en.wikipedia.org/wiki/WebDAV") WebDAV]
   section
     donate-button
 </template>

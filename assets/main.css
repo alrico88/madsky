@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+:root {
+  color-scheme: light;
+  --ui-primary: var(--ui-color-primary-700);
+}
+
+@theme {
+  --font-sans: "Noto Sans", sans-serif;
+  --font-mono: "Inconsolata", monospace;
+}
