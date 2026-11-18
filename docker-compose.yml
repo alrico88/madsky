@@ -3,6 +3,10 @@
 # latest-master and <short sha>-master) and redeploys this stack, which pulls the new image.
 services:
   madsky:
+    labels:
+      caddy: "madsky.alrico.es"
+      caddy.import_0: gzip
+      caddy.reverse_proxy: "{{upstreams 3000}}"
     image: ghcr.io/alrico88/madsky:master
     pull_policy: always
     container_name: madsky
