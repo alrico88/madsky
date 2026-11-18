@@ -1,9 +1,10 @@
+# Komodo stack "madsky" on the hetzner server. On each push to master the Komodo procedure "madsky"
+# builds the image on the mini builder, pushes it to ghcr.io/alrico88/madsky (tags master,
+# latest-master and <short sha>-master) and redeploys this stack, which pulls the new image.
 services:
   madsky:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: madsky
+    image: ghcr.io/alrico88/madsky:master
+    pull_policy: always
     container_name: madsky
     environment:
       NODE_ENV: production
